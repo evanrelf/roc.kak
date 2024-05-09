@@ -27,6 +27,11 @@ provide-module roc %§
 # Highlighters
 # ‾‾‾‾‾‾‾‾‾‾‾‾
 
+add-highlighter shared/roc regions
+add-highlighter shared/roc/code default-region group
+add-highlighter shared/roc/string region %{(?<!')"} (?<!\\)(\\\\)*" fill string
+add-highlighter shared/roc/comment region '^\h*#' $ fill comment
+
 # Commands
 # ‾‾‾‾‾‾‾‾
 
