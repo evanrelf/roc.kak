@@ -13,6 +13,7 @@ hook global BufCreate .*[.](roc) %{
 
 hook global WinSetOption filetype=roc %<
   require-module roc
+  hook window InsertChar \n -group roc-indent roc-indent-on-new-line
   hook window ModeChange pop:insert:.* -group roc-trim-indent roc-trim-indent
   hook -once -always window WinSetOption filetype=.* %{ remove-hooks window roc-.+ }
 >
@@ -54,5 +55,16 @@ add-highlighter shared/roc/code/number regex ((\b|-)[0-9](?:[0-9_]*[0-9])?(?:\.[
 define-command -hidden roc-trim-indent %{
   try %{ execute-keys -draft -itersel x s \h+$ <ret> d }
 }
+
+define-command -hidden roc-indent-on-new-line %<
+  evaluate-commands -draft -itersel %<
+    # Preserve previous indent
+    try %{ execute-keys -draft <semicolon> K <a-&> }
+    # Trim trailing whitespace from previous line
+    try %{ execute-keys -draft k x s \h+$ <ret> d }
+    # Increase indentation if previous line has special ending
+    try %< execute-keys -draft k x <a-k> \b(?:is|then|else)\b|(?:\(|\{|\[|=|:|<lt>-|-<gt>)$ <ret> <a-K> ^\h*# <ret> j <a-gt> >
+  >
+>
 
 §
