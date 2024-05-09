@@ -34,7 +34,9 @@ add-highlighter shared/roc/code default-region group
 # TODO: Does Roc have multi-line strings?
 # TODO: Support escapes in strings (e.g. `"caf\u(e9)" == "café"` and the usual
 # `"\n\t"`)
-add-highlighter shared/roc/string region %{(?<!')"} (?<!\\)(\\\\)*" fill string
+add-highlighter shared/roc/string region '"' (?<!\\)(?:\\\\)*" regions
+add-highlighter shared/roc/string/fill default-region fill string
+add-highlighter shared/roc/string/interpolation region (?<!\\)(?:\\\\)*\$\( \) ref roc
 add-highlighter shared/roc/comment region '^\h*#' $ fill comment
 add-highlighter shared/roc/code/keyword group
 add-highlighter shared/roc/code/keyword/module regex \b(?:interface|app|package|platform)\b 0:keyword
@@ -49,7 +51,7 @@ add-highlighter shared/roc/code/keyword/branch regex \b(?:when|is|if|then|else)\
 # TODO: Ditch "keyword operator vs keyword symbol" distinction
 # https://www.roc-lang.org/tutorial#operator-desugaring-table (list is incomplete, doesn't include `Ord`-y operators)
 add-highlighter shared/roc/code/keyword/operator regex (?:\+|-|\*|/|//|\^|%|==|!=|<|<=|>|>=|&&|\|\||\b!|\|>) 0:keyword
-add-highlighter shared/roc/code/keyword/symbol regex (?:=|:|:=|->|<-|\(|\)|\{|\}|\[|\]|,|!\b|\\|\||&|\?|\b_\b) 0:keyword
+add-highlighter shared/roc/code/keyword/symbol regex (?:=|:|:=|->|<-|\$?\(|\)|\{|\}|\[|\]|,|!\b|\\|\||&|\?|\b_\b) 0:keyword
 add-highlighter shared/roc/code/keyword/other regex (?:dbg|crash|expect) 0:keyword
 # TODO: Highlight number type suffixes (e.g. `42u8`, like what Rust does)
 add-highlighter shared/roc/code/number group
@@ -59,8 +61,6 @@ add-highlighter shared/roc/code/number/binary regex \b(0b[01_+]*[01])\b 1:value
 # TODO: Highlight tags. Should be PascalCase things lacking dots. Don't do this
 # if there are things like that which aren't tags; ambiguity bad. Newtypes have
 # an `@` prefix, it seems?
-# TODO: Highlight interpolation in strings (at least in a different color, not
-# necessarily as a sub-region)
 
 # Commands
 # ‾‾‾‾‾‾‾‾
