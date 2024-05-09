@@ -31,6 +31,22 @@ add-highlighter shared/roc regions
 add-highlighter shared/roc/code default-region group
 add-highlighter shared/roc/string region %{(?<!')"} (?<!\\)(\\\\)*" fill string
 add-highlighter shared/roc/comment region '^\h*#' $ fill comment
+add-highlighter shared/roc/code/keyword group
+add-highlighter shared/roc/code/keyword/module regex \b(?:interface|app|package|platform)\b 0:keyword
+# TODO: Is this old syntax?
+# https://www.roc-lang.org/tutorial#app-module-header
+add-highlighter shared/roc/code/keyword/module2 regex \b(?:packages|imports|provides|to)\b 0:keyword
+# TODO: Is this list old? Doesn't include newer `import` (singular) keyword.
+# https://www.roc-lang.org/tutorial#reserved-keywords
+add-highlighter shared/roc/code/keyword/reserved regex \b(?:if|then|else|when|as|is|dbg|expect|expect-fx|crash|interface|app|package|platform|hosted|exposes|imports|with|generates|packages|requires|provides|to)\b 0:keyword
+add-highlighter shared/roc/code/keyword/import regex \b(?:import|exposing)\b 0:keyword
+add-highlighter shared/roc/code/keyword/branch regex \b(?:when|is|if|then|else)\b 0:keyword
+# https://www.roc-lang.org/tutorial#operator-desugaring-table (list is incomplete, doesn't include `Ord`-y operators)
+add-highlighter shared/roc/code/keyword/operator regex (?:\+|-|\*|/|//|\^|%|==|!=|<|<=|>|>=|&&|\|\||\b!|\|>) 0:keyword
+add-highlighter shared/roc/code/keyword/symbol regex (?:=|:|->|<-|\(|\)|\{|\}|\[|\]|,|!\b|\\|\||) 0:keyword
+add-highlighter shared/roc/code/keyword/other regex (?:dbg|crash) 0:keyword
+# TODO: Does Roc allow `_`s in number literals?
+add-highlighter shared/roc/code/number regex ((\b|-)[0-9](?:[0-9_]*[0-9])?(?:\.[0-9](?:[0-9_]*[0-9])?)?)\b 1:value
 
 # Commands
 # ‾‾‾‾‾‾‾‾
