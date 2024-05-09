@@ -10,6 +10,19 @@ import weaver.Opt
 import weaver.Cli
 import weaver.Param
 
+Person : { name : Str, age : U8 }
+
+evan : Person
+evan = { name: "Evan", age: 128 }
+
+greet : { name : Str }* -> Task {} _
+greet = \{ name } -> Stdout.line! "Hello, $(name)!"
+
+addHttps : { url : Str }a -> { url : Str }a
+addHttps = \record ->
+    { record & url: "https://$(record.url)" }
+
+main : Task {} _
 main =
     when Cli.parseOrDisplayMessage cliParser Arg.list! is
         Ok data ->
@@ -17,9 +30,13 @@ main =
             Stdout.line! ""
             Stdout.line! (Inspect.toStr data)
 
+            if data.alpha == 42 && data.force then
+                greet evan
+            else
+                Task.ok {}
+
         Err message ->
             Stdout.line! message
-
             Task.err (Exit 1 "")
 
 cliParser =

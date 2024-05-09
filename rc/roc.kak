@@ -13,6 +13,7 @@ hook global BufCreate .*[.](roc) %{
 
 hook global WinSetOption filetype=roc %<
   require-module roc
+  # hook window InsertChar \n -group roc-indent roc-insert-on-new-line
   hook window InsertChar \n -group roc-indent roc-indent-on-new-line
   hook window ModeChange pop:insert:.* -group roc-trim-indent roc-trim-indent
   hook -once -always window WinSetOption filetype=.* %{ remove-hooks window roc-.+ }
@@ -30,6 +31,9 @@ provide-module roc %§
 
 add-highlighter shared/roc regions
 add-highlighter shared/roc/code default-region group
+# TODO: Does Roc have multi-line strings?
+# TODO: Support escapes in strings (e.g. `"caf\u(e9)" == "café"` and the usual
+# `"\n\t"`)
 add-highlighter shared/roc/string region %{(?<!')"} (?<!\\)(\\\\)*" fill string
 add-highlighter shared/roc/comment region '^\h*#' $ fill comment
 add-highlighter shared/roc/code/keyword group
@@ -42,18 +46,33 @@ add-highlighter shared/roc/code/keyword/module2 regex \b(?:packages|imports|prov
 add-highlighter shared/roc/code/keyword/reserved regex \b(?:if|then|else|when|as|is|dbg|expect|expect-fx|crash|interface|app|package|platform|hosted|exposes|imports|with|generates|packages|requires|provides|to)\b 0:keyword
 add-highlighter shared/roc/code/keyword/import regex \b(?:import|exposing)\b 0:keyword
 add-highlighter shared/roc/code/keyword/branch regex \b(?:when|is|if|then|else)\b 0:keyword
+# TODO: Ditch "keyword operator vs keyword symbol" distinction
 # https://www.roc-lang.org/tutorial#operator-desugaring-table (list is incomplete, doesn't include `Ord`-y operators)
 add-highlighter shared/roc/code/keyword/operator regex (?:\+|-|\*|/|//|\^|%|==|!=|<|<=|>|>=|&&|\|\||\b!|\|>) 0:keyword
-add-highlighter shared/roc/code/keyword/symbol regex (?:=|:|->|<-|\(|\)|\{|\}|\[|\]|,|!\b|\\|\||) 0:keyword
-add-highlighter shared/roc/code/keyword/other regex (?:dbg|crash) 0:keyword
-# TODO: Does Roc allow `_`s in number literals?
-add-highlighter shared/roc/code/number regex ((\b|-)[0-9](?:[0-9_]*[0-9])?(?:\.[0-9](?:[0-9_]*[0-9])?)?)\b 1:value
+add-highlighter shared/roc/code/keyword/symbol regex (?:=|:|:=|->|<-|\(|\)|\{|\}|\[|\]|,|!\b|\\|\||&|\?|\b_\b) 0:keyword
+add-highlighter shared/roc/code/keyword/other regex (?:dbg|crash|expect) 0:keyword
+# TODO: Highlight number type suffixes (e.g. `42u8`, like what Rust does)
+add-highlighter shared/roc/code/number group
+add-highlighter shared/roc/code/number/decimal regex ((\b|-)[0-9](?:[0-9_]*[0-9])?(?:\.[0-9](?:[0-9_]*[0-9])?)?)\b 1:value
+add-highlighter shared/roc/code/number/hexadecimal regex \b(0x[0-9a-f_]*[0-9a-f])\b 1:value
+add-highlighter shared/roc/code/number/binary regex \b(0b[01_+]*[01])\b 1:value
+# TODO: Highlight tags. Should be PascalCase things lacking dots. Don't do this
+# if there are things like that which aren't tags; ambiguity bad. Newtypes have
+# an `@` prefix, it seems?
+# TODO: Highlight interpolation in strings (at least in a different color, not
+# necessarily as a sub-region)
 
 # Commands
 # ‾‾‾‾‾‾‾‾
 
 define-command -hidden roc-trim-indent %{
   try %{ execute-keys -draft -itersel x s \h+$ <ret> d }
+}
+
+define-command -hidden roc-insert-on-new-line %{
+  # TODO: Continue comment blocks
+  # TODO: Close pairs
+  nop
 }
 
 define-command -hidden roc-indent-on-new-line %<
