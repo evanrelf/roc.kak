@@ -53,6 +53,7 @@ add-highlighter shared/roc/code/keyword/branch regex \b(?:when|is|if|then|else)\
 add-highlighter shared/roc/code/keyword/operator regex (?:\+|-|\*|/|//|\^|%|==|!=|<|<=|>|>=|&&|\|\||\b!|\|>) 0:keyword
 add-highlighter shared/roc/code/keyword/symbol regex (?:=|:|:=|->|<-|\$?\(|\)|\{|\}|\[|\]|,|!\b|\\|\||&|\?|\b_\b) 0:keyword
 add-highlighter shared/roc/code/keyword/other regex (?:dbg|crash|expect) 0:keyword
+add-highlighter shared/roc/code/type regex @?(?<![a-z]\.)\b(?:(?:[A-Z]\w*)(?:\.[A-Z]\w*)*)\b(?!\.[a-z]) 0:type
 add-highlighter shared/roc/code/module regex (?:import)\h+\b(\w+(?:\.[A-Z]\w+)*)\b 1:module
 add-highlighter shared/roc/code/number group
 # TODO: Highlight tags. Should be PascalCase things lacking dots. Don't do this
