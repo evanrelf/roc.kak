@@ -37,7 +37,7 @@ add-highlighter shared/roc/code default-region group
 add-highlighter shared/roc/string region '"' (?<!\\)(?:\\\\)*" regions
 add-highlighter shared/roc/string/fill default-region fill string
 add-highlighter shared/roc/string/interpolation region (?<!\\)(?:\\\\)*\$\( \) ref roc
-add-highlighter shared/roc/comment region '^\h*#' $ fill comment
+add-highlighter shared/roc/comment region '#' $ fill comment
 add-highlighter shared/roc/code/keyword group
 add-highlighter shared/roc/code/keyword/module regex \b(?:interface|app|package|platform)\b 0:keyword
 # TODO: Is this old syntax?
