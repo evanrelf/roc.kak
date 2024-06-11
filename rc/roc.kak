@@ -51,7 +51,7 @@ add-highlighter shared/roc/code/keyword/branch regex \b(?:when|is|if|then|else)\
 # TODO: Ditch "keyword operator vs keyword symbol" distinction
 # https://www.roc-lang.org/tutorial#operator-desugaring-table (list is incomplete, doesn't include `Ord`-y operators)
 add-highlighter shared/roc/code/keyword/operator regex (?:\+|-|\*|/|//|\^|%|==|!=|<|<=|>|>=|&&|\|\||\b!|\|>) 0:keyword
-add-highlighter shared/roc/code/keyword/symbol regex (?:=|:|:=|->|<-|\$?\(|\)|\{|\}|\[|\]|,|!\b|\\|\||&|\?|\b_\b) 0:keyword
+add-highlighter shared/roc/code/keyword/symbol regex (?:=|:|:=|->|<-|\$?\(|\)|\{|\}|\[|\]|,|!\b|\\|\||&|\?|\b_\b|\.\.) 0:keyword
 add-highlighter shared/roc/code/keyword/other regex (?:dbg|crash|expect) 0:keyword
 add-highlighter shared/roc/code/type regex @?(?<![a-z]\.)\b(?:(?:[A-Z]\w*)(?:\.[A-Z]\w*)*)\b(?!\.[a-z]) 0:type
 add-highlighter shared/roc/code/module regex (?:import)\h+\b(\w+(?:\.[A-Z]\w+)*)\b 1:module
